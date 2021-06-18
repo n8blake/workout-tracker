@@ -10,11 +10,12 @@ router.get('/stats', (request, response) => {
 });
 
 router.get('/exercise', (request, response) => {
-	if(request.query.id !== 'undefined' ){
-		response.send(request.query.id);
-	} else {
-		response.sendFile(path.join(__dirname, '../public/exercise.html'));
-	}
+	// if(request.query.id !== 'undefined' ){
+	// 	response.send(request.query.id);
+	// } else {
+	// 	response.sendFile(path.join(__dirname, '../public/exercise.html'));
+	// }
+	response.sendFile(path.join(__dirname, '../public/exercise.html'));
 });
 
 

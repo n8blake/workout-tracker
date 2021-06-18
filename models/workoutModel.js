@@ -8,19 +8,10 @@ const WorkoutSchema = new Schema({
     trim: true,
     required: "Date is Required"
   },
-
   exercises: {
   	type: Array,
   	required: "Exercises are required"
-  },
-
-  userCreated: {
-    type: Date,
-    default: Date.now
-  },
-
-  lastUpdated: Date,
-
+  }
 });
 
 
