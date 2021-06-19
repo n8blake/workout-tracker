@@ -6,26 +6,19 @@ const mongoose = require("mongoose");
 router.put("/api/workouts/:id", async (req, res) => {
   // find the workout by its id
   // add the body to its array of excercies
-  console.log('put end point hit');
-  //console.log(body);
   Workouts.findById(req.params.id, async function(error, workout){
     if(error){
       res.status(400).json(error);
     }
-    console.log(req.body);
     const newExcercise = req.body;
     const exs = workout.exercises;
     exs.push(newExcercise);
-    console.log(exs);
     const options = {};
     options.new = true;    
     Workouts.findByIdAndUpdate(req.params.id, {exercises: exs}, options, function(error, response){
       if(error){
         res.status(400).json(error);
       }
-      console.log('should have worked');
-      console.log(exs);
-      console.log(response);
       res.json(response);
     });
     
@@ -41,16 +34,11 @@ router.post("/api/workouts", ({ body }, res) => {
     day: new Date(),
     excercises: []
   }
-  console.log(workout);
-  //res.send('bye');
-
   Workouts.create(workout)
     .then(dbTransaction => {
       res.json(dbTransaction);
     })
     .catch(err => {
-      console.log(err);
-      console.log(body);
       res.status(400).json(err);
     });
 });
@@ -59,8 +47,18 @@ router.post("/api/workouts", ({ body }, res) => {
 router.get("/api/workouts", (req, res) => {
   Workouts.find({})
     .limit(1)
-    .sort({ date: -1 })
+    .sort({ day: -1 })
+    .lean()
     .then(dbTransaction => {
+      dbTransaction.forEach(workout => {
+        workout.totalDuration = 0;
+        workout.exercises.forEach(excercise => {
+          console.log(excercise);
+          if(excercise.duration){
+            workout.totalDuration += excercise.duration;
+          }
+        });
+      });
       res.json(dbTransaction);
     })
     .catch(err => {
@@ -72,8 +70,17 @@ router.get("/api/workouts", (req, res) => {
 router.get("/api/workouts/range", (req, res) => {
   Workouts.find({})
     .limit(7)
-    .sort({ date: -1 })
+    .sort({ day: -1 })
+    .lean()
     .then(dbTransaction => {
+      dbTransaction.forEach(workout => {
+        workout.totalDuration = 0;
+        workout.exercises.forEach(excercise => {
+          if(excercise.duration){
+            workout.totalDuration += excercise.duration;
+          }
+        });
+      });
       res.json(dbTransaction);
     })
     .catch(err => {
