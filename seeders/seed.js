@@ -121,6 +121,30 @@ let workoutSeed = [
         sets: 4
       }
     ]
+  },
+  {
+    day: new Date(new Date().setDate(new Date().getDate() - 1)),
+    exercises: [
+      {
+        type: "resistance",
+        name: "Deadlift",
+        duration: 40,
+        weight: 300,
+        reps: 10,
+        sets: 4
+      }
+    ]
+  },
+  {
+    day: new Date(new Date().setDate(new Date().getDate())),
+    exercises: [
+      {
+        type: "cardio",
+        name: "Running",
+        duration: 40,
+        distance: 4
+      }
+    ]
   }
 ];
 
